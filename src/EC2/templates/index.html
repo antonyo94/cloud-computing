@@ -1,0 +1,64 @@
+    <!DOCTYPE html>
+    <html lang="en">
+     
+    <head>
+        <title>{{ title }}</title>
+        <meta http-equiv="refresh" content="3" >
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    </head>
+     
+    <body>
+        {% block content %}
+            <div class="container">
+                <div class="page-header">
+                  <h1><font color="#004F7F">{{ title }}</font></h1>
+                </div>
+
+
+            <!--Check if variable is empty-->
+            {% if data|length %} 
+                <nav class="navbar navbar-light bg-light">
+                  <a class="navbar-brand" href="/">Data</a>
+                  <a class="navbar-brand" href="{{ url_for('line') }}">Percentage Chart</a>
+                  <a class="navbar-brand" href="{{ url_for('bar') }}">Level Chart</a>
+                </nav>
+
+                <div class="table-responsive">
+                <table class="table table-bordered table-sm" id="data">
+                    <thead class="thead-dark">
+                        <tr bgcolor="#0787D5">
+                            <th scope="col"><font color="#FFF">DATE</font></th>
+                            <th scope="col"><font color="#FFF">DISTANCE</font></th>
+                            <th scope="col"><font color="#FFF">PERCENTAGE</font></th>
+                            <th scope="col"><font color="#FFF">LEVEL</font></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for datas in data %}
+                        <tr bgcolor="#F9F9F9">
+                            <td> {{datas['date'] }} </td>
+                            <td> {{datas['distance'] }} cm</td>
+                            <td> {{ datas['percentage'] }}% </td>
+                            <td> {{ datas['level'] }} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+
+                <footer class="page-footer font-small blue pt-4">
+                    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                        <a href="/"> Antonio Abate - Progetto APRA</a>
+                    </div>
+                </footer>
+
+            {% else %}
+                <h2><font color="red">No data found</font></h2>
+            {% endif %}
+
+            </div>
+        {% endblock %}
+</body>
+</html>

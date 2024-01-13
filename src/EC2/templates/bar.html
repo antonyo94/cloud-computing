@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+</head>
+
+<body>
+<div class="container">
+  <div class="page-header">
+    <h1><font color="#004F7F">{{ title }}</font></h1>
+  </div>
+
+  <!--Check if variable is empty-->
+  {% if values|length %} 
+                <nav class="navbar navbar-light bg-light">
+                  <a class="navbar-brand" href="/">Data</a>
+                  <a class="navbar-brand" href="{{ url_for('line') }}">Percentage Chart</a>
+                  <a class="navbar-brand" href="{{ url_for('bar') }}">Level Chart</a>
+                </nav>
+
+        <center>
+          <canvas id="chart" width="600" height="400"></canvas>
+          <script>
+              // bar chart data
+              var barData = {
+                labels : [
+                {% for item in labels %}
+                "{{ item }}",
+                {% endfor %}
+                ],
+
+                datasets : [{
+                  fillColor: "rgba(151,187,205,0.2)",
+                  strokeColor: "rgba(151,187,205,1)",
+                  pointColor: "rgba(151,187,205,1)",
+                  data : [
+                  {% for item in values %}
+                  "{{ item }}",
+                  {% endfor %}
+                  ]
+                }
+                ]
+              }
+
+                   // get bar chart canvas
+                   var mychart = document.getElementById("chart").getContext("2d");
+
+                   steps = 4
+                   max = {{ max }}
+
+                   // draw bar chart
+                   new Chart(mychart).Bar(barData, {
+                     scaleOverride: true,
+                     scaleSteps: steps,
+                     scaleStepWidth: Math.ceil(max / steps),
+                     scaleStartValue: 0,
+                     scaleShowVerticalLines: true,
+                     scaleShowGridLines : true,
+                     barShowStroke : true,
+                     scaleShowLabels: true
+                   }
+                   );
+
+          </script>
+        </center>
+
+        <footer class="page-footer font-small blue pt-4">
+                <div class="footer-copyright text-center py-3">© 2019 Copyright:
+                  <a href="/"> Antonio Abate - Progetto APRA</a>
+                </div>
+        </footer>
+
+  {% else %}
+        <h2><font color="red">No data found</font></h2>
+  {% endif %}
+  </div>
+</body>
+</html>
